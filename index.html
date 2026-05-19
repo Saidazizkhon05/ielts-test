@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IELTS Reading Tests — Khanov</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #c41230;
+    --red-light: #f7e8eb;
+    --gray: #f5f5f5;
+    --border: #e0e0e0;
+    --text: #1a1a1a;
+    --muted: #666;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--text);
+    background: #fff;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .badge {
+    background: var(--red);
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+    padding: 5px 11px;
+    border-radius: 4px;
+  }
+
+  .site-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #fff 0%, var(--red-light) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 20px 40px;
+    text-align: center;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .hero h1 span { color: var(--red); }
+
+  .hero p {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ── GRID ── */
+  .container {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  /* ── CARD ── */
+  .card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 20px 18px;
+    text-decoration: none;
+    color: var(--text);
+    transition: box-shadow 0.18s, border-color 0.18s, transform 0.18s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s;
+  }
+
+  .card:hover {
+    box-shadow: 0 6px 24px rgba(0,0,0,.10);
+    border-color: #ccc;
+    transform: translateY(-2px);
+  }
+
+  .card:hover::before { transform: scaleX(1); }
+
+  .card-num {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .card-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 18px;
+    flex: 1;
+  }
+
+  .card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--red);
+  }
+
+  .card-cta svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.15s;
+  }
+
+  .card:hover .card-cta svg { transform: translateX(3px); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 480px) {
+    .grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .hero { padding: 32px 16px 28px; }
+    .card { padding: 16px 14px 14px; }
+    .card-title { font-size: 14px; }
+  }
+
+  @media (max-width: 340px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="badge">IELTS</span>
+    <span class="site-title">Reading Tests</span>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>IELTS Reading<br><span>Practice Tests</span></h1>
+  <p>10 full-length reading tests by Khanov. Pick a test below to start — works on phone, tablet, and desktop.</p>
+</section>
+
+<main class="container">
+  <p class="section-label">All Tests</p>
+  <div class="grid">
+
+    <a class="card" href="TEST 1, KHANOV.html">
+      <div class="card-num">Test 01</div>
+      <div class="card-title">Reading Test 1</div>
+      <div class="card-sub">3 passages · 40 questions</div>
+      <span class="card-cta">Start <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+    </a>
+
+    <a class="card" href="TEST 2, KHANOV.html">
+      <div class="card-num">Test 02</div>
+      <div class="card-title">Reading Test 2</div>
+      <div class="card-sub">3 passages · 40 questions</div>
+      <span class="card-cta">Start <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+    </a>
+
+    <a class="card" href="TEST 3, KHANOV.html">
+      <div class="card-num">Test 03</div>
+      <div class="card-title">Reading Test 3</div>
+      <div class="card-sub">3 passages · 40 questions</div>
+      <span class="card-cta">Start <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+    </a>
+
+    <a class="card" href="TEST 4, KHANOV.html">
+      <div class="card-num">Test 04</div>
+      <div class="card-title">Reading Test 4</div>
+      <div class="card-sub">3 passages · 40 questions</div>
+      <span class="card-cta">Start <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+    </a>
+
+    <a class="card" href="TEST 5, KHANOV.html">
+      <div class="card-num">Test 05</div>
+      <div class="card-title">Reading Test 5</div>
+      <div class="card-sub">3 passages · 40 questions</div>
+      <span class="card-cta">Start <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+    </a>
+
+    <a class="card" href="TEST 6, KHANOV.html">
+      <div class="card-num">Test 06</div>
+      <div class="card-title">Reading Test 6</div>
+      <div class="card-sub">3 passages · 40 questions</div>
+      <span class="card-cta">Start <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+    </a>
+
+    <a class="card" href="TEST 7, KHANOV.html">
+      <div class="card-num">Test 07</div>
+      <div class="card-title">Reading Test 7</div>
+      <div class="card-sub">3 passages · 40 questions</div>
+      <span class="card-cta">Start <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+    </a>
+
+    <a class="card" href="TEST 8, KHANOV.html">
+      <div class="card-num">Test 08</div>
+      <div class="card-title">Reading Test 8</div>
+      <div class="card-sub">3 passages · 40 questions</div>
+      <span class="card-cta">Start <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+    </a>
+
+    <a class="card" href="TEST 9, KHANOV.html">
+      <div class="card-num">Test 09</div>
+      <div class="card-title">Reading Test 9</div>
+      <div class="card-sub">3 passages · 40 questions</div>
+      <span class="card-cta">Start <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+    </a>
+
+    <a class="card" href="TEST 10, KHANOV.html">
+      <div class="card-num">Test 10</div>
+      <div class="card-title">Reading Test 10</div>
+      <div class="card-sub">3 passages · 40 questions</div>
+      <span class="card-cta">Start <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+    </a>
+
+  </div>
+</main>
+
+<footer>
+  IELTS Reading Practice · Khanov Series
+</footer>
+
+</body>
+</html>
