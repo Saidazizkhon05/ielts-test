@@ -225,6 +225,66 @@
     border-radius: 50%;
   }
 
+  /* ── CHANNEL BANNER ── */
+  .channel-banner {
+    background: linear-gradient(90deg, #1a1a2e 0%, #16213e 100%);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .channel-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255,255,255,0.2);
+    flex-shrink: 0;
+  }
+
+  .channel-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .channel-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .channel-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .channel-join {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: #29b6f6;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: background 0.15s, transform 0.15s;
+    white-space: nowrap;
+    margin-left: 4px;
+  }
+
+  .channel-join:hover {
+    background: #0288d1;
+    transform: translateY(-1px);
+  }
+
   /* ── MOBILE ── */
   @media (max-width: 480px) {
     .grid { grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -239,6 +299,18 @@
 </style>
 </head>
 <body>
+
+<div class="channel-banner">
+  <img class="channel-avatar" src="photo_2026-05-20_00-42-14.jpg" alt="Sayyid_blog avatar">
+  <div class="channel-info">
+    <span class="channel-label">Telegram Channel</span>
+    <span class="channel-name">Sayyid_blog</span>
+  </div>
+  <a class="channel-join" href="https://t.me/Sayyid_blog" target="_blank" rel="noopener">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+    Join Channel
+  </a>
+</div>
 
 <header>
   <div class="logo">
