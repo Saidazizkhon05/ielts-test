@@ -406,6 +406,17 @@
 
   body.dragging{user-select:none;cursor:col-resize}
   body.dragging *{cursor:col-resize!important}
+
+  /* ── EXAM TIMER ── */
+  .timer{
+    font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;
+    color:#1a1a1a;background:#f5f5f5;border:1px solid #ddd;
+    border-radius:6px;padding:4px 10px;letter-spacing:1.5px;
+    transition:color .3s,background .3s,border-color .3s;
+    flex-shrink:0;
+  }
+  .timer.warn{color:#c41230;background:#fff0f0;border-color:#f5c6cb;animation:pulse .8s ease-in-out infinite alternate;}
+  @keyframes pulse{from{opacity:1}to{opacity:.6}}
 </style>
 </head>
 <body>
@@ -428,6 +439,7 @@
     </a>
   </div>
   <div class="h-right">
+    <div class="timer" id="examTimer">60:00</div>
     <button class="hamburger" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -1186,6 +1198,30 @@ renderPassage();
 renderQuestions();
 renderNav();
 updateProgress();
+</script>
+
+<script>
+/* EXAM TIMER */
+(function(){
+  const SECS = 3600;
+  const _t0 = Date.now();
+  const _el = document.getElementById('examTimer');
+  function _tick(){
+    const rem = SECS - Math.floor((Date.now()-_t0)/1000);
+    if(rem <= 0){
+      _el.textContent='00:00';
+      _el.classList.add('warn');
+      const ov = document.querySelector('#modal');
+      if(!ov || !ov.classList.contains('open')) showResults();
+      return;
+    }
+    const m=Math.floor(rem/60), s=rem%60;
+    _el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    _el.classList.toggle('warn', rem<=300);
+    setTimeout(_tick,500);
+  }
+  _tick();
+})();
 </script>
 </body>
 </html>
