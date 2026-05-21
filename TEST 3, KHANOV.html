@@ -971,14 +971,16 @@ function updateProgress(){
 }
 
 /* ============================================================
-   HIGHLIGHT
+   HIGHLIGHT (passage + questions)
 ============================================================ */
-passagePane.addEventListener('mouseup', () => {
+function _showHlPill() {
   setTimeout(() => {
     const sel = window.getSelection();
     if (!sel || sel.isCollapsed) { hlPill.style.display = 'none'; return; }
     const range = sel.getRangeAt(0);
-    if (!passagePane.contains(range.commonAncestorContainer)) { hlPill.style.display = 'none'; return; }
+    const inP = passagePane.contains(range.commonAncestorContainer);
+    const inQ = questionPane.contains(range.commonAncestorContainer);
+    if (!inP && !inQ) { hlPill.style.display = 'none'; return; }
     if (range.toString().trim() === '') { hlPill.style.display = 'none'; return; }
     const rect = range.getBoundingClientRect();
     hlPill.style.display = 'block';
@@ -992,14 +994,17 @@ passagePane.addEventListener('mouseup', () => {
     hlPill.style.left = left + 'px';
     hlPill.style.top = top + 'px';
   }, 0);
-});
+}
+
+passagePane.addEventListener('mouseup', _showHlPill);
+questionPane.addEventListener('mouseup', _showHlPill);
 
 hlPill.addEventListener('mousedown', e => {
   e.preventDefault();
   const sel = window.getSelection();
   if (!sel || sel.isCollapsed) return;
   const range = sel.getRangeAt(0);
-  if (!passagePane.contains(range.commonAncestorContainer)) return;
+  if (!passagePane.contains(range.commonAncestorContainer) && !questionPane.contains(range.commonAncestorContainer)) return;
   try {
     const span = document.createElement('span');
     span.className = 'highlight';
@@ -1010,7 +1015,7 @@ hlPill.addEventListener('mousedown', e => {
   hlPill.style.display = 'none';
 });
 
-passagePane.addEventListener('click', e => {
+function _removeHl(e) {
   if (e.target.classList && e.target.classList.contains('highlight')) {
     const span = e.target;
     const parent = span.parentNode;
@@ -1018,10 +1023,13 @@ passagePane.addEventListener('click', e => {
     parent.removeChild(span);
     parent.normalize();
   }
-});
+}
+
+passagePane.addEventListener('click', _removeHl);
+questionPane.addEventListener('click', _removeHl);
 
 document.addEventListener('mousedown', e => {
-  if (e.target !== hlPill && !passagePane.contains(e.target)) {
+  if (e.target !== hlPill && !passagePane.contains(e.target) && !questionPane.contains(e.target)) {
     hlPill.style.display = 'none';
   }
 });

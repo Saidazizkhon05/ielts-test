@@ -598,22 +598,28 @@ document.addEventListener('click',e=>{
 // ═══════════════════════════════════════════════════════════
 const pp = document.getElementById('pass-pane');
 const hpill = document.getElementById('hi-pill');
+const qpane = document.getElementById('q-pane');
 
 pp.addEventListener('mouseup', handleSel);
 pp.addEventListener('touchend', handleSel);
-pp.addEventListener('click', e=>{
-  if(e.target.classList.contains('highlight')) {
+qpane.addEventListener('mouseup', handleSel);
+qpane.addEventListener('touchend', handleSel);
+
+function _removeHlB(e){
+  if(e.target.classList.contains('highlight')){
     const par=e.target.parentNode;
     while(e.target.firstChild) par.insertBefore(e.target.firstChild,e.target);
     par.removeChild(e.target);
   }
-});
+}
+pp.addEventListener('click', _removeHlB);
+qpane.addEventListener('click', _removeHlB);
 
 function handleSel() {
   const sel=window.getSelection();
   if(!sel||sel.isCollapsed||!sel.toString().trim()){hpill.style.display='none';return;}
   const r=sel.getRangeAt(0);
-  if(!pp.contains(r.commonAncestorContainer)){hpill.style.display='none';return;}
+  if(!pp.contains(r.commonAncestorContainer)&&!qpane.contains(r.commonAncestorContainer)){hpill.style.display='none';return;}
   selRange=r;
   const rect=r.getBoundingClientRect();
   const top=rect.top<50?rect.bottom+6:rect.top-42;
