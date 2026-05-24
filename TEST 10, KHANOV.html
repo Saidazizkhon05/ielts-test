@@ -310,6 +310,7 @@ const pTitles = {
 // STATE
 // ═══════════════════════════════════════════════════════════
 let AP=1, ANS={}, pFS=14, qFS=13, selRange=null;
+const passageNodes={}, questionNodes={};
 
 // ═══════════════════════════════════════════════════════════
 // UI HELPERS
@@ -507,8 +508,17 @@ Complete the table below. Choose <strong>NO MORE THAN TWO WORDS</strong> from th
 // RENDER
 // ═══════════════════════════════════════════════════════════
 function renderPass(p) {
+  const el=document.getElementById('pass-pane');
+  if (passageNodes[p]) {
+    el.innerHTML='';
+    el.appendChild(passageNodes[p]);
+    delete passageNodes[p];
+    const b=el.querySelector('.p-body');
+    if (b) b.style.fontSize=pFS+'px';
+    return;
+  }
   const d=PASSAGES[p];
-  document.getElementById('pass-pane').innerHTML=
+  el.innerHTML=
     `<div class="p-title">${d.title}</div>`+
     (d.sub?`<div class="p-sub">${d.sub}</div>`:'')+
     `<div class="p-body" style="font-size:${pFS}px">${d.html}</div>`;
@@ -516,11 +526,27 @@ function renderPass(p) {
 
 function renderQ(p) {
   const qp=document.getElementById('q-pane');
+  if (questionNodes[p]) {
+    qp.innerHTML='';
+    qp.appendChild(questionNodes[p]);
+    delete questionNodes[p];
+    qp.scrollTop=0;
+    return;
+  }
   qp.innerHTML=`<div class="q-wrap" style="font-size:${qFS}px">${getQH(p)}</div>`;
   qp.scrollTop=0;
 }
 
 function sw(p) {
+  if (p===AP) return;
+  const _pp=document.getElementById('pass-pane');
+  const _pf=document.createDocumentFragment();
+  while(_pp.firstChild)_pf.appendChild(_pp.firstChild);
+  passageNodes[AP]=_pf;
+  const _qp=document.getElementById('q-pane');
+  const _qf=document.createDocumentFragment();
+  while(_qp.firstChild)_qf.appendChild(_qp.firstChild);
+  questionNodes[AP]=_qf;
   AP=p;
   document.querySelectorAll('.p-tab').forEach((t,i)=>t.classList.toggle('act',i+1===p));
   renderPass(p); renderQ(p); updNav(); updPB();

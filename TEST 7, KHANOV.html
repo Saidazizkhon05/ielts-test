@@ -680,6 +680,8 @@ const QUESTIONS = {
 const state = {
   activePassage:1, answers:{}, passageSize:14, questionSize:13
 };
+const passageNodes = {};
+const questionNodes = {};
 const passagePane = document.getElementById('passagePane');
 const questionPane = document.getElementById('questionPane');
 const bottomNav = document.getElementById('bottomNav');
@@ -690,7 +692,13 @@ const hlPill = document.getElementById('hlPill');
    RENDER
 ============================================================ */
 function renderPassage(){
-  passagePane.innerHTML = PASSAGES[state.activePassage];
+  if (passageNodes[state.activePassage]) {
+    passagePane.innerHTML = '';
+    passagePane.appendChild(passageNodes[state.activePassage]);
+    delete passageNodes[state.activePassage];
+  } else {
+    passagePane.innerHTML = PASSAGES[state.activePassage];
+  }
   passagePane.style.fontSize = state.passageSize + 'px';
 }
 
@@ -706,6 +714,13 @@ function renderRadioItem(n, text, pairs, current, cls){
 }
 
 function renderQuestions(){
+  if (questionNodes[state.activePassage]) {
+    questionPane.innerHTML = '';
+    questionPane.appendChild(questionNodes[state.activePassage]);
+    delete questionNodes[state.activePassage];
+    questionPane.style.fontSize = state.questionSize + 'px';
+    return;
+  }
   const items = QUESTIONS[state.activePassage];
   let html = '';
   for (const item of items) {
@@ -819,6 +834,12 @@ function renderNav(){
     l.addEventListener('click',()=>{
       const p=parseInt(l.dataset.pass,10);
       if(p!==state.activePassage){
+        const _pf=document.createDocumentFragment();
+        while(passagePane.firstChild)_pf.appendChild(passagePane.firstChild);
+        passageNodes[state.activePassage]=_pf;
+        const _qf=document.createDocumentFragment();
+        while(questionPane.firstChild)_qf.appendChild(questionPane.firstChild);
+        questionNodes[state.activePassage]=_qf;
         state.activePassage=p;renderPassage();renderQuestions();renderNav();
         passagePane.scrollTop=0;questionPane.scrollTop=0;
       }
