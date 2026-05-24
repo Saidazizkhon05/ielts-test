@@ -1034,19 +1034,38 @@ function _showHlPill() {
 passagePane.addEventListener('mouseup', _showHlPill);
 questionPane.addEventListener('mouseup', _showHlPill);
 
+function _applyHighlight(range) {
+  const nodes = [];
+  if (range.commonAncestorContainer.nodeType === Node.TEXT_NODE) {
+    nodes.push(range.commonAncestorContainer);
+  } else {
+    const walker = document.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_TEXT, null);
+    while (walker.nextNode()) {
+      if (range.intersectsNode(walker.currentNode)) nodes.push(walker.currentNode);
+    }
+  }
+  nodes.forEach(textNode => {
+    const r = document.createRange();
+    r.selectNodeContents(textNode);
+    if (textNode === range.startContainer) r.setStart(textNode, range.startOffset);
+    if (textNode === range.endContainer) r.setEnd(textNode, range.endOffset);
+    if (!r.toString().trim()) return;
+    try {
+      const span = document.createElement('span');
+      span.className = 'highlight';
+      r.surroundContents(span);
+    } catch (e) {}
+  });
+}
+
 hlPill.addEventListener('mousedown', e => {
   e.preventDefault();
   const sel = window.getSelection();
   if (!sel || sel.isCollapsed) return;
   const range = sel.getRangeAt(0);
   if (!passagePane.contains(range.commonAncestorContainer) && !questionPane.contains(range.commonAncestorContainer)) return;
-  try {
-    const span = document.createElement('span');
-    span.className = 'highlight';
-    span.appendChild(range.extractContents());
-    range.insertNode(span);
-    sel.removeAllRanges();
-  } catch (err) { /* selection spans boundaries */ }
+  _applyHighlight(range);
+  sel.removeAllRanges();
   hlPill.style.display = 'none';
 });
 

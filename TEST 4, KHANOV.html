@@ -982,19 +982,38 @@ function updateProgress(){
 function _showPill(){setTimeout(()=>{const sel=window.getSelection();if(!sel||sel.isCollapsed){hlPill.style.display='none';return;}const range=sel.getRangeAt(0);const inP=passagePane.contains(range.commonAncestorContainer);const inQ=questionPane.contains(range.commonAncestorContainer);if(!inP&&!inQ){hlPill.style.display='none';return;}if(range.toString().trim()===''){hlPill.style.display='none';return;}const rect=range.getBoundingClientRect();hlPill.style.display='block';const pillW=hlPill.offsetWidth,pillH=hlPill.offsetHeight;let left=rect.left+rect.width/2-pillW/2;let top=rect.top-pillH-8;if(top<8)top=rect.bottom+8;if(left<8)left=8;if(left+pillW>window.innerWidth-8)left=window.innerWidth-pillW-8;hlPill.style.left=left+'px';hlPill.style.top=top+'px';},0);}
 passagePane.addEventListener('mouseup',_showPill);
 questionPane.addEventListener('mouseup',_showPill);
+function _applyHighlight(range) {
+  const nodes = [];
+  if (range.commonAncestorContainer.nodeType === Node.TEXT_NODE) {
+    nodes.push(range.commonAncestorContainer);
+  } else {
+    const walker = document.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_TEXT, null);
+    while (walker.nextNode()) {
+      if (range.intersectsNode(walker.currentNode)) nodes.push(walker.currentNode);
+    }
+  }
+  nodes.forEach(textNode => {
+    const r = document.createRange();
+    r.selectNodeContents(textNode);
+    if (textNode === range.startContainer) r.setStart(textNode, range.startOffset);
+    if (textNode === range.endContainer) r.setEnd(textNode, range.endOffset);
+    if (!r.toString().trim()) return;
+    try {
+      const span = document.createElement('span');
+      span.className = 'highlight';
+      r.surroundContents(span);
+    } catch (e) {}
+  });
+}
+
 hlPill.addEventListener('mousedown', e => {
   e.preventDefault();
   const sel = window.getSelection();
   if (!sel || sel.isCollapsed) return;
   const range = sel.getRangeAt(0);
   if (!passagePane.contains(range.commonAncestorContainer) && !questionPane.contains(range.commonAncestorContainer)) return;
-  try {
-    const span = document.createElement('span');
-    span.className = 'highlight';
-    span.appendChild(range.extractContents());
-    range.insertNode(span);
-    sel.removeAllRanges();
-  } catch (err) {}
+  _applyHighlight(range);
+  sel.removeAllRanges();
   hlPill.style.display = 'none';
 });
 function _removeHl(e){if(e.target.classList&&e.target.classList.contains('highlight')){const span=e.target,parent=span.parentNode;while(span.firstChild)parent.insertBefore(span.firstChild,span);parent.removeChild(span);parent.normalize();}}
